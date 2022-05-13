@@ -22,6 +22,7 @@ public class ModelSelect : MonoBehaviour
         {
             selectedObject = true;
         }
+        else selectedObject = false;
 
         if (mAddModel)
         {
