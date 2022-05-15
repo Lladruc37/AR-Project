@@ -6,9 +6,6 @@ public class ModelSelect : MonoBehaviour
     private Transform pickedObject = null;
     private bool mAddModel = false;
     private bool mRemoveModel = false;
-    private bool selectedObject = false;
-
-    private Vector3 lastPlanePoint;
     // Use this for initialization
     void Start()
     {
@@ -18,17 +15,22 @@ public class ModelSelect : MonoBehaviour
     void Update()
     {
         Plane targetPlane = new Plane(transform.up, transform.position);
+
         if (pickedObject != null)
         {
-            selectedObject = true;
-        }
-        else selectedObject = false;
+            if (mAddModel)
+            {
+                pickedObject.GetComponent<AtomBehaviour>().addAtom = true;
+                mAddModel = false;
+            }
 
-        if (mAddModel)
-        {
-            AddModel();
-            mAddModel = false;
+            if (mRemoveModel)
+            {
+                pickedObject.GetComponent<AtomBehaviour>().removeAtom = true;
+                mRemoveModel = false;
+            }
         }
+
 
         foreach (Touch touch in Input.touches)
         {
@@ -44,7 +46,6 @@ public class ModelSelect : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 1000))
                 {
                     pickedObject = hit.transform;
-                    lastPlanePoint = planePoint;
                 }
                 else
                 {
@@ -65,7 +66,6 @@ public class ModelSelect : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 1000))
             {
                 pickedObject = hit.transform;
-                lastPlanePoint = planePoint;
             }
             else
             {
@@ -75,24 +75,24 @@ public class ModelSelect : MonoBehaviour
     }
     void OnGUI()
     {
-        if (selectedObject)
+        if (pickedObject != null)
         {
             GUIStyle myButtonStyle = new GUIStyle(GUI.skin.button);
             myButtonStyle.fontSize = 24;
 
-            GUI.TextArea(new Rect(50,110,200,40), "Selected: ", myButtonStyle); GUI.TextArea(new Rect(250, 110, 200, 40), pickedObject.gameObject.name, myButtonStyle);
-            if (GUI.Button(new Rect(50, 150, 240, 40), "Add Model", myButtonStyle))
+            GUI.TextArea(new Rect(50, 110, 200, 40), "Selected: ", myButtonStyle); GUI.TextArea(new Rect(250, 110, 200, 40), pickedObject.gameObject.name, myButtonStyle);
+            GUI.TextArea(new Rect(50, 150, 200, 40), "Number of atoms: ", myButtonStyle); GUI.TextArea(new Rect(250, 150, 200, 40), pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum.ToString(), myButtonStyle);
+            if (GUI.Button(new Rect(50, 190, 240, 40), "Add Atom", myButtonStyle))
             {
                 mAddModel = true;
             }
-            if (GUI.Button(new Rect(50, 190, 240, 40), "Remove Model", myButtonStyle))
+            if (pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum > 1)
             {
-                mRemoveModel = true;
+                if (GUI.Button(new Rect(50, 230, 240, 40), "Remove Atom", myButtonStyle))
+                {
+                    mRemoveModel = true;
+                }
             }
         }
-    }
-    private void AddModel()
-    {
-        
     }
 }
