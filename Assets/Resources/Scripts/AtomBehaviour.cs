@@ -19,12 +19,6 @@ public class AtomBehaviour : MonoBehaviour
     {
         if (addAtom || removeAtom)
         {
-            for(int i = 0; i < atomDuplicates.Count; i++)
-            {
-                Destroy(atomDuplicates[i].gameObject);
-            }
-            atomDuplicates.Clear();
-
             if (addAtom)
             {
                 atomNum++;
@@ -36,28 +30,41 @@ public class AtomBehaviour : MonoBehaviour
                 removeAtom = false;
             }
 
-            Debug.Log("Atom Number: " + atomNum);
-
-            /* Distance around the circle */
-            for (int i = 0; i < (atomNum - 1); i++)
-            {
-                /* Distance around the circle */
-                var radians = 2 * Mathf.PI / atomNum * i;
-
-                /* Get the vector direction */
-                var vertical = Mathf.Sin(radians);
-                var horizontal = Mathf.Cos(radians);
-
-                var spawnDir = new Vector3(horizontal, 0, vertical);
-
-                /* Get the spawn position */
-                var spawnPos = transform.position + spawnDir * radius; // Radius is just the distance away from the point
-
-                /* Now spawn */
-                atomDuplicates.Add(Instantiate(gameObject, spawnPos, Quaternion.identity));
-            }
-
+            UpdateInstances();
             Debug.Log("Atom Number Dublicates: " + atomDuplicates.Count);
+        }
+    }
+
+    public void UpdateInstances()
+    {
+        for(int i = 0; i < atomDuplicates.Count; i++)
+        {
+            Destroy(atomDuplicates[i].gameObject);
+        }
+        atomDuplicates.Clear();
+
+        Debug.Log("Atom Number: " + atomNum);
+
+        /* Distance around the circle */
+        for (int i = 0; i < (atomNum - 1); i++)
+        {
+            /* Distance around the circle */
+            var radians = 2 * Mathf.PI / (atomNum - 1) * i;
+
+            /* Get the vector direction */
+            var vertical = Mathf.Sin(radians);
+            var horizontal = Mathf.Cos(radians);
+
+            var spawnDir = new Vector3(horizontal, 0, vertical);
+
+            /* Get the spawn position */
+            var spawnPos = transform.position + spawnDir * radius; // Radius is just the distance away from the point
+
+            /* Now spawn */
+            Vector3 parentScale = gameObject.transform.localScale;
+            GameObject go = Instantiate(gameObject, spawnPos, gameObject.transform.localRotation);
+            go.transform.localScale = 0.75f * parentScale;
+            atomDuplicates.Add(go);
         }
     }
 }
