@@ -7,8 +7,7 @@ public class CombinatorBehaviour : MonoBehaviour
     public GameObject atomOne;
     public GameObject atomTwo;
     public float dist;
-    public List<GameObject> resultingMolecules;
-    int numResult;
+    private GameObject resultingMolecule;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,17 +18,13 @@ public class CombinatorBehaviour : MonoBehaviour
     void Update()
     {
         //Reset Each Frame
-        for(int i = 0; i < resultingMolecules.Count; i++)
-        {
-            Destroy(resultingMolecules[i].gameObject);
-        }
-        resultingMolecules.Clear();
+        Destroy(resultingMolecule);
 
-        foreach (GameObject a in atomOne.GetComponent<AtomBehaviour>().atomDuplicates)
+        foreach (GameObject a in atomOne.GetComponentInChildren<AtomBehaviour>().atomDuplicates)
         {
             foreach (Renderer r in a.GetComponentsInChildren<Renderer>()) r.enabled = true;
         }
-        foreach (GameObject a in atomTwo.GetComponent<AtomBehaviour>().atomDuplicates)
+        foreach (GameObject a in atomTwo.GetComponentInChildren<AtomBehaviour>().atomDuplicates)
         {
             foreach (Renderer r in a.GetComponentsInChildren<Renderer>()) r.enabled = true;
         } 
@@ -42,45 +37,26 @@ public class CombinatorBehaviour : MonoBehaviour
         if(result <= dist) //Add conditions for combinations
         {
             Debug.Log(result);
-            Vector3 resultLocation = atomOne.transform.position + ((atomOne.transform.position + atomTwo.transform.position)/2);
+            Vector3 distance = atomTwo.transform.position - atomOne.transform.position;
+            Vector3 resultLocation = atomOne.transform.position + distance;
             Debug.Log(atomOne.transform.position);
             Debug.Log(atomTwo.transform.position);
             Debug.Log(resultLocation);
             //Hardcoded Water Reaction
-            if (atomOne.GetComponent<AtomBehaviour>().atomNum == 4 && atomTwo.GetComponent<AtomBehaviour>().atomNum == 2)
+            if (atomOne.GetComponentInChildren<AtomBehaviour>().atomNum == 2 && atomTwo.GetComponentInChildren<AtomBehaviour>().atomNum == 1)
             {
-                foreach (GameObject a in atomOne.GetComponent<AtomBehaviour>().atomDuplicates)
+                foreach (GameObject a in atomOne.GetComponentInChildren<AtomBehaviour>().atomDuplicates)
                 {
                     foreach (Renderer r in a.GetComponentsInChildren<Renderer>()) r.enabled = false;
                 }
-                foreach (GameObject a in atomTwo.GetComponent<AtomBehaviour>().atomDuplicates)
+                foreach (GameObject a in atomTwo.GetComponentInChildren<AtomBehaviour>().atomDuplicates)
                 {
                     foreach (Renderer r in a.GetComponentsInChildren<Renderer>()) r.enabled = false;
                 } 
                 foreach (Renderer r in atomOne.GetComponentsInChildren<Renderer>()) r.enabled = false;
                 foreach (Renderer r in atomTwo.GetComponentsInChildren<Renderer>()) r.enabled = false;
 
-                numResult = 2;
-                 /* Distance around the circle */
-                for (int i = 0; i < numResult; i++)
-                {
-                    /* Distance around the circle */
-                    var radians = 2 * Mathf.PI / numResult * i;
-
-                    /* Get the vector direction */
-                    var vertical = Mathf.Sin(radians);
-                    var horizontal = Mathf.Cos(radians);
-
-                    var spawnDir = new Vector3(horizontal, 0, vertical);
-
-                    /* Get the spawn position */
-                    var spawnPos = resultLocation + spawnDir * 0.01f; // Radius is just the distance away from the point
-
-                    /* Now spawn */
-                    
-                    GameObject go = Instantiate(GameObject.FindGameObjectWithTag("H20"), spawnPos, Quaternion.identity);
-                    resultingMolecules.Add(go);
-                }
+                resultingMolecule = Instantiate(GameObject.FindGameObjectWithTag("H20"), resultLocation, Quaternion.Euler(new Vector3(-90, 0, -60)));
             }
         }
         
