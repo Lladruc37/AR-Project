@@ -10,10 +10,18 @@ public class AtomBehaviour : MonoBehaviour
     public float radius = 0.03f;
     public bool addAtom = false;
     public bool removeAtom = false;
-    void Start()
+    public bool isVisible = false;
+
+    public void Visible()
     {
-        
+        isVisible = true;
     }
+
+    public void NotVisible()
+    {
+        isVisible = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -29,23 +37,48 @@ public class AtomBehaviour : MonoBehaviour
                 atomNum--;
                 removeAtom = false;
             }
+        }
 
-            UpdateInstances();
+        UpdateInstances();
+
+        if(isVisible)
+        {
+            SetRendererTo(true);
             Debug.Log("Atom Number Dublicates: " + atomDuplicates.Count);
+        }
+        else
+		{
+            SetRendererTo(false);
+            DeleteInstances();
         }
     }
 
-    public void UpdateInstances()
-    {
-        for(int i = 0; i < atomDuplicates.Count; i++)
+    void SetRendererTo(bool value)
+	{
+        MeshRenderer[] mArray = gameObject.GetComponentsInChildren<MeshRenderer>();
+        foreach (var m in mArray)
+        {
+            m.enabled = value;
+        }
+    }
+
+    void DeleteInstances()
+	{
+        for (int i = 0; i < atomDuplicates.Count; i++)
         {
             Destroy(atomDuplicates[i].gameObject);
         }
         atomDuplicates.Clear();
+    }
+
+    void UpdateInstances()
+    {
+        //Destroy all duplicates
+        DeleteInstances();
 
         Debug.Log("Atom Number: " + atomNum);
 
-        /* Distance around the circle */
+        // Create duplicates
         for (int i = 0; i < (atomNum - 1); i++)
         {
             /* Distance around the circle */
