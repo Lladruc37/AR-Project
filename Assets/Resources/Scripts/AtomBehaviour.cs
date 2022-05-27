@@ -15,11 +15,13 @@ public class AtomBehaviour : MonoBehaviour
     public void Visible()
     {
         isVisible = true;
+        UpdateInstances();
     }
 
     public void NotVisible()
     {
         isVisible = false;
+        DeleteInstances();
     }
 
     // Update is called once per frame
@@ -37,19 +39,20 @@ public class AtomBehaviour : MonoBehaviour
                 atomNum--;
                 removeAtom = false;
             }
-        }
 
-        UpdateInstances();
+            UpdateInstances();
+        }
 
         if(isVisible)
         {
+            Debug.Log("Visible");
             SetRendererTo(true);
             Debug.Log("Atom Number Dublicates: " + atomDuplicates.Count);
         }
         else
 		{
+            Debug.Log("NOT Visible");
             SetRendererTo(false);
-            DeleteInstances();
         }
     }
 
@@ -77,6 +80,7 @@ public class AtomBehaviour : MonoBehaviour
         DeleteInstances();
 
         Debug.Log("Atom Number: " + atomNum);
+        SetRendererTo(true);
 
         // Create duplicates
         for (int i = 0; i < (atomNum - 1); i++)

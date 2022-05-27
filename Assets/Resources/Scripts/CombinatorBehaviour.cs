@@ -8,10 +8,11 @@ public class CombinatorBehaviour : MonoBehaviour
     public GameObject atomTwo;
     public float dist;
     private GameObject resultingMolecule;
+    Table library;
     // Start is called before the first frame update
     void Start()
     {
-        
+        library = GetComponent<Table>();
     }
 
     // Update is called once per frame
@@ -42,7 +43,15 @@ public class CombinatorBehaviour : MonoBehaviour
             Debug.Log(atomOne.transform.position);
             Debug.Log(atomTwo.transform.position);
             Debug.Log(resultLocation);
-            //Hardcoded Water Reaction
+			//Hardcoded Water Reaction
+
+            //EXPLODES HERE
+			//Molecule m = library.CheckCombinations(new Combination(Element(ElementType.Hydrogen,2),Element(ElementType.Oxygen,1));
+            //if(m != null)
+            //{
+            //
+            //}
+
             if (atomOne.GetComponentInChildren<AtomBehaviour>().atomNum == 2 && atomTwo.GetComponentInChildren<AtomBehaviour>().atomNum == 1)
             {
                 foreach (GameObject a in atomOne.GetComponentInChildren<AtomBehaviour>().atomDuplicates)
