@@ -81,14 +81,16 @@ public class ModelSelect : MonoBehaviour
             myButtonStyle.fontSize = 24;
 
             GUI.TextArea(new Rect(50, 110, 200, 40), "Selected: ", myButtonStyle); GUI.TextArea(new Rect(250, 110, 200, 40), pickedObject.gameObject.name, myButtonStyle);
-            GUI.TextArea(new Rect(50, 150, 200, 40), "Number of atoms: ", myButtonStyle); GUI.TextArea(new Rect(250, 150, 200, 40), pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum.ToString(), myButtonStyle);
-            if (GUI.Button(new Rect(50, 190, 240, 40), "Add Atom", myButtonStyle))
+            GUI.TextArea(new Rect(50, 150, 250, 40), "Number of atoms: ", myButtonStyle); GUI.TextArea(new Rect(300, 150, 200, 40), pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum.ToString(), myButtonStyle);
+            int atomTotalCharge = pickedObject.gameObject.GetComponent<AtomBehaviour>().atomCharge * pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum;
+            GUI.TextArea(new Rect(50, 190, 250, 40), "Current Charge: ", myButtonStyle); GUI.TextArea(new Rect(300, 190, 200, 40), atomTotalCharge.ToString(), myButtonStyle);
+            if (GUI.Button(new Rect(50, 230, 240, 40), "Add Atom", myButtonStyle))
             {
                 mAddModel = true;
             }
             if (pickedObject.gameObject.GetComponent<AtomBehaviour>().atomNum > 1)
             {
-                if (GUI.Button(new Rect(50, 230, 240, 40), "Remove Atom", myButtonStyle))
+                if (GUI.Button(new Rect(50, 270, 240, 40), "Remove Atom", myButtonStyle))
                 {
                     mRemoveModel = true;
                 }

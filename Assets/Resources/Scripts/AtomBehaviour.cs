@@ -7,10 +7,12 @@ public class AtomBehaviour : MonoBehaviour
     // Start is called before the first frame update
     public List<GameObject> atomDuplicates;
     public short atomNum = 1;
+    public int atomCharge = 0;
     public float radius = 0.03f;
     public bool addAtom = false;
     public bool removeAtom = false;
     public bool isVisible = false;
+    public bool combined = false;
 
     public void Visible()
     {
@@ -39,19 +41,27 @@ public class AtomBehaviour : MonoBehaviour
                 atomNum--;
                 removeAtom = false;
             }
-
-            UpdateInstances();
         }
 
-        if(isVisible)
+        UpdateInstances();
+
+        if (!combined)
         {
-            Debug.Log("Visible");
-            SetRendererTo(true);
-            Debug.Log("Atom Number Dublicates: " + atomDuplicates.Count);
+            if (isVisible)
+            {
+                Debug.Log("Visible");
+                SetRendererTo(true);
+                Debug.Log("Atom Number Dublicates: " + atomDuplicates.Count);
+            }
+            else
+            {
+                Debug.Log("NOT Visible");
+                SetRendererTo(false);
+            }
         }
         else
-		{
-            Debug.Log("NOT Visible");
+        {
+            Debug.Log("COMBINED");
             SetRendererTo(false);
         }
     }
@@ -80,7 +90,10 @@ public class AtomBehaviour : MonoBehaviour
         DeleteInstances();
 
         Debug.Log("Atom Number: " + atomNum);
-        SetRendererTo(true);
+        if (!combined)
+        {
+            SetRendererTo(true);
+        }
 
         // Create duplicates
         for (int i = 0; i < (atomNum - 1); i++)
