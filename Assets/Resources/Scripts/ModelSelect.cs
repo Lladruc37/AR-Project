@@ -47,10 +47,6 @@ public class ModelSelect : MonoBehaviour
                 {
                     pickedObject = hit.transform;
                 }
-                else
-                {
-                    pickedObject = null;
-                }
             }
         }
 
@@ -66,10 +62,6 @@ public class ModelSelect : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 1000))
             {
                 pickedObject = hit.transform;
-            }
-            else
-            {
-                pickedObject = null;
             }
         }
     }
