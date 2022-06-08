@@ -84,15 +84,15 @@ public class CombinatorBehaviour : MonoBehaviour
         if (areTogether)
         {
             GUIStyle myButtonStyle = new GUIStyle(GUI.skin.button);
-            myButtonStyle.fontSize = 24;
+            myButtonStyle.fontSize = 18;
 
             if (combinationWorks)
             {
-                GUI.TextArea(new Rect(300, 850, 900, 40), "Congratulations! You created H20.", myButtonStyle);
+                GUI.TextArea(new Rect(350, 550, 600, 40), "Congratulations! You created H20.", myButtonStyle);
             }
             else
             {
-                GUI.TextArea(new Rect(300, 850, 900, 40), "Unstable combination. The atoms should have a neutral electric charge", myButtonStyle);
+                GUI.TextArea(new Rect(350, 550, 600, 40), "Unstable combination. The atoms should have a neutral electric charge", myButtonStyle);
             }
         }
     }
